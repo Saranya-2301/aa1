@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <title>Reports</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="homepage.html">🏠 Home</a><br><br>
+    <a href="dashboard.html">📈 Dashboard</a><br><br>
+    <a href="inventory.html">📦 Inventory</a><br><br>
+    <a href="settings.html">⚙️ Settings</a><br><br>
+    <a href="plogin.html">🔐 Login</a><br><br>
+  </nav>
+
+  <section>
+    <h1>Reports</h1>
+    <canvas id="salesChart" width="400" height="200"></canvas>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+
+      const products = JSON.parse(localStorage.getItem('products')) || [
+        { name: 'Product A', quantity: 50 },
+        { name: 'Product B', quantity: 30 },
+        { name: 'Product C', quantity: 20 },
+      ];
+
+      const labels = products.map(p => p.name);
+      const data = products.map(p => p.quantity);
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Product Stock Levels',
+            data: data,
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(75, 192, 192, 0.6)',
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 99, 132, 1)',
+              'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

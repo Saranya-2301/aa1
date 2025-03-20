@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+  <title>Settings - Inventory System</title>
+</head>
+<body style="
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+">
+  <div style="
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+  ">
+    <h1 style="color: #4a4a4a; text-align: center;">Settings</h1>
+
+    <label style="display: block; margin-bottom: 12px; color: #333;">
+      Select Theme:
+      <select id="themeSelector" style="
+        padding: 10px;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      ">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
+
+    <h2 style="color: #4a4a4a;">Profile Update</h2>
+    <label style="display: block; margin-bottom: 8px; color: #333;">Full Name</label>
+    <input type="text" id="name" placeholder="Enter your name" style="
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 16px;
+    ">
+
+    <label style="display: block; margin-bottom: 8px; color: #333;">Email</label>
+    <input type="email" id="email" placeholder="Enter your email" style="
+      padding: 12px;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 16px;
+    ">
+
+    <button onclick="updateProfile()" style="
+      background-color: #6a0dad;
+      color: white;
+      padding: 14px;
+      border: none;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 16px;
+    ">Update Profile</button>
+
+    <button onclick="logout()" style="
+      background-color: #d9534f;
+      color: white;
+      padding: 14px;
+      border: none;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    ">Logout</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.getElementById('themeSelector').value = savedTheme;
+      document.body.style.backgroundColor = savedTheme === 'dark' ? '#1e1e1e' : '#f0f4f8';
+
+      const user = JSON.parse(localStorage.getItem('loggedInUser'));
+      if (user) {
+        document.getElementById('name').value = user.name;
+        document.getElementById('email').value = user.email;
+      }
+    });
+
+    document.getElementById('themeSelector').addEventListener('change', function() {
+      const selectedTheme = this.value;
+      localStorage.setItem('theme', selectedTheme);
+      document.body.style.backgroundColor = selectedTheme === 'dark' ? '#1e1e1e' : '#f0f4f8';
+    });
+
+    function updateProfile() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      const userIndex = users.findIndex(u => u.email === email);
+
+      if (userIndex !== -1) {
+        users[userIndex].name = name;
+        localStorage.setItem('users', JSON.stringify(users));
+        alert('Profile updated successfully!');
+      } else {
+        alert('User not found!');
+      }
+    }
+
+    
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      alert('Logged out successfully!');
+      window.location.href = 'plogin.html';
+    }
+  </script>
+</body>
+</html>
